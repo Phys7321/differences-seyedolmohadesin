@@ -27,15 +27,22 @@ n=length(x);
 dx = diff(x);
 
 switch varargin{1}
-    case 'fd' 
+
+    case 'cd'
+        dy = (F(x(1:n-1)+0.5*dx) - F(x(1:n-1)-0.5*dx))./dx;
+        xc = chop(x);
+    case 'fd'
         dy = (F(x(2:n)) - F(x(1:n-1)))./dx;
         xc = x(1:n-1);
     case 'bd'
         dy = (F(x(2:n)) - F(x(1:n-1)))./dx;
         xc = x(2:n);
-    case 'cd'
-        dy = (F(x(1:n-1)+0.5*dx) - F(x(1:n-1)-0.5*dx))./dx;
-        xc = chop(x);
+    case 'hd'
+        dy = (F(x(1:n-1)-1.5*dx) ./24 + 27 .*F(x(1:n-1)+0.5*dx) ./24 - 27 .*F(x(1:n-1)-0.5*dx) ./24 -F(x(1:n-1)+1.5*dx) ./24)./dx;
+        xc = x(1:n-1);
+    case '2d'
+        dy = (F(x(1:n-1)+dx)+F(x(1:n-1)-dx)-2 .*F(x(1:n-1))) ./ dx .^2
+        xc = x(1:n-1);
     case 'ed'
         half = (F(x(1:n-1)+0.25*dx) - F(x(1:n-1)-0.25*dx))./(0.5*dx); 
         full = (F(x(1:n-1)+0.5*dx) - F(x(1:n-1)-0.5*dx))./dx;
